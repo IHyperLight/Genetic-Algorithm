@@ -1,0 +1,493 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Obtén una dieta óptima</title>
+        <link
+            rel="shortcut icon"
+            href="{{url_for('static',filename='images/logo.png')}}"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            href="{{url_for('static',filename='styles/front.css')}}"
+        />
+    </head>
+    <body>
+        {% with messages = get_flashed_messages(category_filter=["notify"]) %}
+        {% if messages %} {% for message in messages %}
+        <div class="alert"><div>{{message}}</div></div>
+        {% endfor %} {% endif %} {% endwith %}
+        <div class="bar">
+            <div id="progress"></div>
+        </div>
+        <header class="header">
+            <div class="header-container">
+                <nav class="nav">
+                    <div class="nav-logo">
+                        <ul class="nav-logo__item">
+                            <li>
+                                <a
+                                    href="/"
+                                    class="nav-logo__link"
+                                    title="Recargar página de inicio"
+                                    ><object
+                                        class="nav-logo__image"
+                                        data="{{url_for('static',filename='images/logo.png')}}"
+                                    ></object
+                                    >Softness</a
+                                >
+                            </li>
+                            <li>
+                                <form
+                                    id="upload"
+                                    action="/"
+                                    method="POST"
+                                    enctype="multipart/form-data"
+                                >
+                                    <input
+                                        onclick="update()"
+                                        id="decoy"
+                                        type="file"
+                                        name="file"
+                                        onchange="submitForm()"
+                                    />
+                                    <label for="decoy" class="btn" id="up"
+                                        >{% if file_uploaded %}Dataset activo{%
+                                        else %}Subir dataset{% endif %}
+                                    </label>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="nav-menu">
+                        <ul class="nav-menu__item">
+                            <li>
+                                <div class="switch">
+                                    <div class="switch-content">
+                                        <input
+                                            id="mark"
+                                            type="checkbox"
+                                            onchange="dark()"
+                                            checked
+                                        />
+                                        <label
+                                            id="mark-label"
+                                            for="mark"
+                                        ></label>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a
+                                    href="https://github.com"
+                                    class="nav-menu__link"
+                                    ><i class="fa-brands fa-github"></i
+                                    >&nbsp;Github</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="main-hero">
+                    <div class="hero">
+                        <div class="hero-text">
+                            <h1 class="hero-text__main">
+                                Obtén una dieta óptima,
+                            </h1>
+                            <p class="hero-text__subs">
+                                según tus requerimientos . . .
+                            </p>
+                            <div class="hero-btn-1">
+                                <form id="main_form" class="form" method="POST">
+                                    <ul class="input-list">
+                                        <li>
+                                            <input {% with messages =
+                                            get_flashed_messages(category_filter=["text"])
+                                            %} {% if messages[0] %} value
+                                            ="{{messages[0][0]}}" {% endif %} {%
+                                            endwith %} class="form__input"
+                                            name="step_1" type="text"
+                                            placeholder="Energía (kcal)" />
+                                            <input {% with messages =
+                                            get_flashed_messages(category_filter=["text"])
+                                            %} {% if messages[0] %} value
+                                            ="{{messages[0][6]}}" {% endif %} {%
+                                            endwith %} class="form__input"
+                                            name="step_7" type="text"
+                                            placeholder="Tiamina (mg)" />
+                                        </li>
+                                        <li>
+                                            <input {% with messages =
+                                            get_flashed_messages(category_filter=["text"])
+                                            %} {% if messages[0] %} value
+                                            ="{{messages[0][1]}}" {% endif %} {%
+                                            endwith %} class="form__input"
+                                            name="step_2" type="text"
+                                            placeholder="Proteína (g)" /> <input
+                                            {% with messages =
+                                            get_flashed_messages(category_filter=["text"])
+                                            %} {% if messages[0] %} value
+                                            ="{{messages[0][7]}}" {% endif %} {%
+                                            endwith %} class="form__input"
+                                            name="step_8" type="text"
+                                            placeholder="Rivoflavina (mg)" />
+                                        </li>
+                                        <li>
+                                            <input {% with messages =
+                                            get_flashed_messages(category_filter=["text"])
+                                            %} {% if messages[0] %} value
+                                            ="{{messages[0][2]}}" {% endif %} {%
+                                            endwith %} class="form__input"
+                                            name="step_3" type="text"
+                                            placeholder="Grasa (g)" /> <input {%
+                                            with messages =
+                                            get_flashed_messages(category_filter=["text"])
+                                            %} {% if messages[0] %} value
+                                            ="{{messages[0][8]}}" {% endif %} {%
+                                            endwith %} class="form__input"
+                                            name="step_9" type="text"
+                                            placeholder="Niacina (mg)" />
+                                        </li>
+                                        <li>
+                                            <input {% with messages =
+                                            get_flashed_messages(category_filter=["text"])
+                                            %} {% if messages[0] %} value
+                                            ="{{messages[0][3]}}" {% endif %} {%
+                                            endwith %} class="form__input"
+                                            name="step_4" type="text"
+                                            placeholder="Calcio (mg)" /> <input
+                                            {% with messages =
+                                            get_flashed_messages(category_filter=["text"])
+                                            %} {% if messages[0] %} value
+                                            ="{{messages[0][9]}}" {% endif %} {%
+                                            endwith %} class="form__input"
+                                            name="step_10" type="text"
+                                            placeholder="Folato (µg)" />
+                                        </li>
+                                        <li>
+                                            <input {% with messages =
+                                            get_flashed_messages(category_filter=["text"])
+                                            %} {% if messages[0] %} value
+                                            ="{{messages[0][4]}}" {% endif %} {%
+                                            endwith %} class="form__input"
+                                            name="step_5" type="text"
+                                            placeholder="Hierro (mg)" /> <input
+                                            {% with messages =
+                                            get_flashed_messages(category_filter=["text"])
+                                            %} {% if messages[0] %} value
+                                            ="{{messages[0][10]}}" {% endif %}
+                                            {% endwith %} class="form__input"
+                                            name="step_11" type="text"
+                                            placeholder="Vitamina C (mg)" />
+                                        </li>
+                                        <li>
+                                            <input {% with messages =
+                                            get_flashed_messages(category_filter=["text"])
+                                            %} {% if messages[0] %} value
+                                            ="{{messages[0][5]}}" {% endif %} {%
+                                            endwith %} class="form__input"
+                                            name="step_6" type="text"
+                                            placeholder="Vitamina A (µg)" />
+                                        </li>
+                                        <li>
+                                            <input
+                                                onclick="update()"
+                                                class="btn-1"
+                                                type="submit"
+                                                value="Ejecutar"
+                                            />
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="hover-animation">
+                            <div class="hover-animation__image">
+                                <figure>
+                                    <img
+                                        src="{{url_for('static',filename='images/food.jpg')}}"
+                                    />
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-2">
+                        <ul class="table-hero-2">
+                            <li>
+                                <p class="support-hero-text__subs">
+                                    <span class="span-bold"
+                                        >Parámetros del algoritmo genético
+                                        :</span
+                                    >
+                                    <span
+                                        >&lt;población&gt;,&lt;generaciones&gt;,&lt;prob.
+                                        de cruza&gt;,&lt;prob. de
+                                        muta&gt;,&lt;tamaño de torneo&gt;</span
+                                    >
+                                </p>
+                            </li>
+                            <li>
+                                <div class="box-parameters">
+                                    <input {% with params =
+                                    get_flashed_messages(category_filter=["params"])
+                                    %} {% if params %} value ="{{params[0]}}" {%
+                                    endif %} {% endwith %} class="form__input"
+                                    name="params" type="text" id="parameters"
+                                    value="50 , 100 , 0.8 , 0.05 , 5"/>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="hero-3">
+                        {% if data %}
+                        <p class="extra-hero-text__subs">Dieta óptima . . .</p>
+                        <div class="result-container">
+                            {% for d in data %}
+                            <div class="rectangle">
+                                {% for key, value in d.items() %}
+                                <div>
+                                    <span class="key-text">{{ key }}</span>
+                                    <span class="value-text">{{ value }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="textainer">
+                            {% with m_1 =
+                            get_flashed_messages(category_filter=["totals"]) %}
+                            {% if m_1[0] %} {% with m_2 =
+                            get_flashed_messages(category_filter=["required"])
+                            %} {% if m_2[0] %} {% with m_3 =
+                            get_flashed_messages(category_filter=["difference"])
+                            %} {% if m_3[0] %}
+                            <p class="more-hero-text__subs">
+                                <span class="emoji">⚡ </span> Energía total =
+                                {{m_1[0][0]}} | Requerido = {{m_2[0][0]}} |
+                                Diferencia = {{m_3[0][0]}}
+                            </p>
+                            <p class="more-hero-text__subs">
+                                <span class="emoji">🍖 </span> Proteína total =
+                                {{m_1[0][1]}} | Requerido = {{m_2[0][1]}} |
+                                Diferencia = {{m_3[0][1]}}
+                            </p>
+                            <p class="more-hero-text__subs">
+                                <span class="emoji">🍔 </span> Grasa total =
+                                {{m_1[0][2]}} | Requerido = {{m_2[0][2]}} |
+                                Diferencia = {{m_3[0][2]}}
+                            </p>
+                            <p class="more-hero-text__subs">
+                                <span class="emoji">🧀 </span> Calcio total =
+                                {{m_1[0][3]}} | Requerido = {{m_2[0][3]}} |
+                                Diferencia = {{m_3[0][3]}}
+                            </p>
+                            <p class="more-hero-text__subs">
+                                <span class="emoji">🪨 </span> Hierro total =
+                                {{m_1[0][4]}} | Requerido = {{m_2[0][4]}} |
+                                Diferencia = {{m_3[0][4]}}
+                            </p>
+                            <p class="more-hero-text__subs">
+                                <span class="emoji">🥕 </span> Vitamina A total
+                                = {{m_1[0][5]}} | Requerido = {{m_2[0][5]}} |
+                                Diferencia = {{m_3[0][5]}}
+                            </p>
+                            <p class="more-hero-text__subs">
+                                <span class="emoji">🌰 </span> Tiamina total =
+                                {{m_1[0][6]}} | Requerido = {{m_2[0][6]}} |
+                                Diferencia = {{m_3[0][6]}}
+                            </p>
+                            <p class="more-hero-text__subs">
+                                <span class="emoji">🐟 </span> Riboflavina total
+                                = {{m_1[0][7]}} | Requerido = {{m_2[0][7]}} |
+                                Diferencia = {{m_3[0][7]}}
+                            </p>
+                            <p class="more-hero-text__subs">
+                                <span class="emoji">🥦 </span> Niacina total =
+                                {{m_1[0][8]}} | Requerido = {{m_2[0][8]}} |
+                                Diferencia = {{m_3[0][8]}}
+                            </p>
+                            <p class="more-hero-text__subs">
+                                <span class="emoji">🥑 </span> Folato total =
+                                {{m_1[0][9]}} | Requerido = {{m_2[0][9]}} |
+                                Diferencia = {{m_3[0][9]}}
+                            </p>
+                            <p class="more-hero-text__subs">
+                                <span class="emoji">🍊 </span> Vitamina C total
+                                = {{m_1[0][10]}} | Requerido = {{m_2[0][10]}} |
+                                Diferencia = {{m_3[0][10]}}
+                            </p>
+                            {% endif %} {% endwith %} {% endif %} {% endwith %}
+                            {% endif %} {% endwith %}
+                        </div>
+                        <img
+                            class="graph-image"
+                            src="{{ imagen_url }}"
+                            alt="Gráfica de resultados"
+                        />
+                        {% endif %}
+                    </div>
+                    <div class="footer-mobile">
+                        <div class="footer-container">
+                            <div class="footer-text">
+                                <p>Bryan Alexander Morales Roblero</p>
+                                <h3>Algoritmo genético de permutaciones</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <footer class="footer-desktop">
+            <div class="footer-container">
+                <div class="footer-text">
+                    <p>Bryan Alexander Morales Roblero</p>
+                    <h3>Algoritmo genético de permutaciones</h3>
+                </div>
+            </div>
+        </footer>
+        <script
+            src="https://kit.fontawesome.com/10a83cea79.js"
+            crossorigin="anonymous"
+        ></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                setTimeout(function () {
+                    $(".alert").fadeOut(600);
+                }, 5000);
+            });
+        </script>
+        <script>
+            function update() {
+                var element = document.getElementById("progress");
+                var width = 1;
+                var identity = scene();
+                function scene() {
+                    width += 99;
+                    element.style.width = width + "%";
+                    element.style.visibility = "visible";
+                    element.style.opacity = 1;
+                    element.style.transition = "opacity 1.5s linear";
+                }
+            }
+        </script>
+        <script>
+            checkbox = document.getElementById("mark");
+            checkbox.checked = eval(window.localStorage.getItem(checkbox.id));
+            checkbox.addEventListener("change", function () {
+                window.localStorage.setItem(checkbox.id, checkbox.checked);
+            });
+            function dark() {
+                const background = "dark-background";
+                const hover = "dark-hover";
+                const text = "dark-text";
+                const shadow = "dark-shadow";
+                const shadows = "dark-shadows";
+                const shadows_extra = "dark-shadows-extra";
+                const inner = "dark-inner";
+                const place = "dark-form__input";
+                const color = "dark-color";
+                var body = document.body;
+                body.classList.toggle(background);
+                var menu = document.getElementsByClassName("nav-menu__link");
+                menu[0].classList.toggle(hover);
+                var logo = document.getElementsByClassName("nav-logo__link");
+                for (let i = 0; i < logo.length; i++) {
+                    logo[i].classList.toggle(text);
+                }
+                var main = document.getElementsByClassName("hero-text__main");
+                for (let i = 0; i < main.length; i++) {
+                    main[i].classList.toggle(text);
+                }
+                var subs_1 = document.getElementsByClassName("hero-text__subs");
+                for (let i = 0; i < subs_1.length; i++) {
+                    subs_1[i].classList.toggle(text);
+                }
+                var subs_2 = document.getElementsByClassName(
+                    "support-hero-text__subs"
+                );
+                for (let i = 0; i < subs_2.length; i++) {
+                    subs_2[i].classList.toggle(text);
+                }
+                var subs_3 = document.getElementsByClassName(
+                    "extra-hero-text__subs"
+                );
+                for (let i = 0; i < subs_3.length; i++) {
+                    subs_3[i].classList.toggle(text);
+                }
+                var subs_4 = document.getElementsByClassName(
+                    "more-hero-text__subs"
+                );
+                for (let i = 0; i < subs_4.length; i++) {
+                    subs_4[i].classList.toggle(text);
+                }
+                var changer = document.getElementById("mark-label");
+                changer.classList.toggle(shadow);
+                var btn_1 = document.getElementsByClassName("btn-1");
+                for (let i = 0; i < btn_1.length; i++) {
+                    btn_1[i].classList.toggle(shadows);
+                }
+                var btn_2 = document.getElementsByClassName("btn");
+                for (let i = 0; i < btn_2.length; i++) {
+                    btn_2[i].classList.toggle(shadows_extra);
+                }
+                var input = document.getElementsByClassName("form__input");
+                for (let i = 0; i < input.length; i++) {
+                    input[i].classList.toggle(inner);
+                    input[i].classList.toggle(place);
+                }
+                var area = document.getElementsByClassName("area");
+                for (let i = 0; i < area.length; i++) {
+                    area[i].classList.toggle(inner);
+                }
+                var row = document.getElementsByClassName("rectangle");
+                for (let i = 0; i < row.length; i++) {
+                    row[i].classList.toggle(shadow);
+                    row[i].classList.toggle(color);
+                }
+            }
+            if (checkbox.checked) {
+                dark();
+            }
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var form = document.getElementById("main_form");
+
+                form.addEventListener("submit", function (event) {
+                    var hiddenInput = document.createElement("input");
+
+                    hiddenInput.type = "hidden";
+                    hiddenInput.name = "params";
+                    hiddenInput.value =
+                        document.getElementById("parameters").value;
+
+                    form.appendChild(hiddenInput);
+                });
+            });
+        </script>
+        <script>
+            function submitForm() {
+                var form = document.getElementById("upload");
+                var label = document.getElementById("up");
+                var fileInput = document.getElementById("decoy");
+
+                var formData = new FormData();
+                formData.append("file", fileInput.files[0]);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/", true);
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        label.innerText = "Dataset activo";
+                    } else {
+                        label.innerText = "Sube un .xlsx";
+                    }
+                };
+
+                xhr.send(formData);
+            }
+        </script>
+    </body>
+</html>
