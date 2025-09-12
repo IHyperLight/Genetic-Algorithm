@@ -4,7 +4,7 @@
         <title>Obtén una dieta óptima</title>
         <link
             rel="shortcut icon"
-            href="{{url_for('static',filename='images/logo.png')}}"
+            href="{{url_for('static',filename='images/logo.webp')}}"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
@@ -30,11 +30,11 @@
                                     href="/"
                                     class="nav-logo__link"
                                     title="Recargar página de inicio"
-                                    ><object
+                                    ><img
                                         class="nav-logo__image"
-                                        data="{{url_for('static',filename='images/logo.png')}}"
-                                    ></object
-                                    >Softness</a
+                                        src="{{url_for('static',filename='images/logo.webp')}}"
+                                        alt="Logo Softness"
+                                    />Softness</a
                                 >
                             </li>
                             <li>
@@ -45,7 +45,7 @@
                                     enctype="multipart/form-data"
                                 >
                                     <input
-                                        onclick="update()"
+                                        onclick="updateFileProgress()"
                                         id="decoy"
                                         type="file"
                                         name="file"
@@ -205,7 +205,7 @@
                             <div class="hover-animation__image">
                                 <figure>
                                     <img
-                                        src="{{url_for('static',filename='images/food.jpg')}}"
+                                        src="{{url_for('static',filename='images/food.webp')}}"
                                     />
                                 </figure>
                             </div>
@@ -352,23 +352,56 @@
         <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
+                // Ocultar barra de progreso al cargar la página
+                hideProgressBar();
+
                 setTimeout(function () {
                     $(".alert").fadeOut(600);
                 }, 5000);
             });
         </script>
         <script>
-            function update() {
+            function showProgressBar() {
                 var element = document.getElementById("progress");
-                var width = 1;
-                var identity = scene();
-                function scene() {
-                    width += 99;
-                    element.style.width = width + "%";
-                    element.style.visibility = "visible";
-                    element.style.opacity = 1;
-                    element.style.transition = "opacity 1.5s linear";
-                }
+                element.style.width = "0%";
+                element.style.visibility = "visible";
+                element.style.opacity = 1;
+                element.style.transition = "width 2s ease-in-out";
+
+                // Simular progreso gradual
+                setTimeout(function () {
+                    element.style.width = "30%";
+                }, 100);
+                setTimeout(function () {
+                    element.style.width = "60%";
+                }, 1000);
+                setTimeout(function () {
+                    element.style.width = "90%";
+                }, 1800);
+            }
+
+            function hideProgressBar() {
+                var element = document.getElementById("progress");
+                element.style.width = "100%";
+                setTimeout(function () {
+                    element.style.visibility = "hidden";
+                    element.style.opacity = 0;
+                    element.style.width = "0%";
+                }, 500);
+            }
+
+            function updateFileProgress() {
+                var element = document.getElementById("progress");
+                element.style.width = "0%";
+                element.style.visibility = "visible";
+                element.style.opacity = 1;
+                element.style.transition = "width 0.8s ease";
+                setTimeout(function () {
+                    element.style.width = "100%";
+                }, 100);
+                setTimeout(function () {
+                    hideProgressBar();
+                }, 800);
             }
         </script>
         <script>
@@ -455,6 +488,9 @@
                 var form = document.getElementById("main_form");
 
                 form.addEventListener("submit", function (event) {
+                    // Mostrar barra de progreso al enviar el formulario
+                    showProgressBar();
+
                     var hiddenInput = document.createElement("input");
 
                     hiddenInput.type = "hidden";
@@ -481,9 +517,16 @@
                 xhr.onload = function () {
                     if (xhr.status === 200) {
                         label.innerText = "Dataset activo";
+                        hideProgressBar();
                     } else {
                         label.innerText = "Sube un .xlsx";
+                        hideProgressBar();
                     }
+                };
+
+                xhr.onerror = function () {
+                    label.innerText = "Error al subir";
+                    hideProgressBar();
                 };
 
                 xhr.send(formData);

@@ -448,7 +448,7 @@ body::-webkit-scrollbar-corner {
     margin-top: -1em;
     width: 20rem;
     text-align: center;
-    font-weight: bold;
+    font-weight: bolder;
 }
 
 .hover-animation figure img {
