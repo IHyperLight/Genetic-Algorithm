@@ -20,6 +20,10 @@ app.secret_key = "llave_secreta"
 UPLOAD_FOLDER = "uploads"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
+# Crear directorios necesarios si no existen
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs("graphs", exist_ok=True)
+
 
 def is_number(value):
     try:
@@ -236,11 +240,28 @@ def front():
 
 @app.route("/grafica")
 def graph():
-    return send_file("graphs/fitness_plot.png", mimetype="image/png")
+    try:
+        # Crear directorio graphs si no existe
+        os.makedirs("graphs", exist_ok=True)
+        
+        # Verificar si el archivo existe antes de enviarlo
+        graph_path = "graphs/fitness_plot.png"
+        if os.path.exists(graph_path):
+            return send_file(graph_path, mimetype="image/png")
+        else:
+            # Si no existe, crear un gráfico vacío o devolver error 404
+            from flask import abort
+            abort(404)
+    except Exception as e:
+        from flask import abort
+        abort(500)
 
 
 def main():
-    app.run(debug=True, port="5000", host="0.0.0.0")
+    # Configuración para producción (Render) y desarrollo
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('FLASK_ENV') != 'production'
+    app.run(debug=debug, port=port, host="0.0.0.0")
 
 
 if __name__ == "__main__":

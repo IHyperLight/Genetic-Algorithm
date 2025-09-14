@@ -1,7 +1,8 @@
 import random
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')  # Usar backend no interactivo para servidores
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 # función fitness mejorada
